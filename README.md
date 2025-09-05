@@ -37,6 +37,11 @@ So first you will need to download and install Chaste and its dependencies. A gu
 After installing Chaste the simplest way to dowloading this project as a zip file and exporting it to the Chaste project folder (PATH_TO_CHASTE/Chaste/projects).
 You will then need to follow the steps outlined at https://chaste.github.io/docs/user-guides/user-projects/ for installing,setting up and running the project.
 
+**Change corresponding files in trunk**
+To allow for some of the code within this project to run we are required to change VertexBasedCellPopulation and MutableVertexMesh in the main Chaste trunk code. This is to move some functions from private to protected such that child classes can access them.
+
+To do the new versions of the files in ChangeCorresponding trunk and replace *both hpp and cpp* files of VertexBasedCellPopulation (trunk address: Chaste/cell_based/src/population ) and MutableVertexMesh (trunk address: Chaste/mesh/src/vertex).
+
 **Running the tests**
 
 This project contains two main tests. 
