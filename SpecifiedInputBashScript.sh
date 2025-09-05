@@ -33,7 +33,7 @@ for ((i = 1; i <= $rec_column3; i += 1)); do
      echo "Simulation: $rec_column4"
      echo "Run: $i"
      ## Running simulation with read in parameters
-     ~/bui/projects/BayesianTissueProject2/test/TestPaperCommandLineSpeedSimulation -opt1 $rec_column1 -opt2 $rec_column2 -opt3 $i -opt4 $rec_column4 &
+     ~/build/projects/BayesianTissueProject2/test/TestPaperCommandLineSpeedSimulation -opt1 $rec_column1 -opt2 $rec_column2 -opt3 $i -opt4 $rec_column4 &
      echo ""
 done
 done < <(tail -n +1 ~/Chaste/projects/BayesianTissueProject/ExampleCommandLineCSV.csv)
