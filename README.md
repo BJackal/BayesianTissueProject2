@@ -37,6 +37,8 @@ So first you will need to download and install Chaste and its dependencies. A gu
 After installing Chaste the simplest way to dowloading this project as a zip file and exporting it to the Chaste project folder (PATH_TO_CHASTE/Chaste/projects).
 You will then need to follow the steps outlined at https://chaste.github.io/docs/user-guides/user-projects/ for installing,setting up and running the project.
 
+*NOTE*: There is a chacne that your project will have _main_ appended to the end of it. To ensure that the project runs correctllys it should only be named "BayesianTissueProject2"
+
 **Change corresponding files in trunk**
 To allow for some of the code within this project to run we are required to change VertexBasedCellPopulation and MutableVertexMesh in the main Chaste trunk code. This is to move some functions from private to protected such that child classes can access them.
 
