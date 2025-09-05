@@ -36,6 +36,6 @@ for ((i = 1; i <= $rec_column3; i += 1)); do
      ~/build/projects/BayesianTissueProject2/test/TestPaperCommandLineSpeedSimulation -opt1 $rec_column1 -opt2 $rec_column2 -opt3 $i -opt4 $rec_column4 &
      echo ""
 done
-done < <(tail -n +1 ~/Chaste/projects/BayesianTissueProject/ExampleCommandLineCSV.csv)
+done < <(tail -n +1 ~/Chaste/projects/BayesianTissueProject2/ExampleCommandLineCSV.csv)
 # Echos that the simulations have all been ran, this does not mean they did not error.
 echo All done
