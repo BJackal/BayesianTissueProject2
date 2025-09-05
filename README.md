@@ -41,10 +41,10 @@ You will then need to follow the steps outlined at https://chaste.github.io/docs
 
 This project contains two main tests. 
 
-First, TestPaperVertexSimulation.hpp which is a standard version of a chaste test and can be run by typing "ctest -V -R TestPaperVertexSimulation".
+First, TestPaperVertexSimulation.hpp which is a standard version of a chaste test and can be run by typing "ctest -V -R TestPaperSpeedSimulation".
 This will execute the test with whatever parameters are currently in the file.
 
-Second, TestPaperCommandLineVertexSimulation.hpp. This test cannot be run using ctest as it requires inputs from the command line. For ease a bash script can be found in BayesianTissueProject/ExampleBashScriptForLooping.sh and a example csv.
+Second, TestPaperCommandLineSpeedSimulation.hpp. This test cannot be run using ctest as it requires inputs from the command line. For ease a bash script can be found in BayesianTissueProject/ExampleBashScriptForLooping.sh and a example csv.
 To run this test first follow the steps for setting up the the project (this assumes you are in your build directory)then run "ccmake PATH_TO_CHASTE/Chaste && make -j4 projects/BayesianTissueProject && cd  /PATH_TO_CHASTE/Chaste/projects/BayesianTissuePorjects && bash ./ExampleBashScriptForLooping.sh". This will execute the example test with the example csv file. 
 
 To change the input csv file simply change the file name in the bash script and palce your new target csv in the same folder. Note, if you simply run the test with a new csv and no code is changed you simply need to change the bash script then run  
