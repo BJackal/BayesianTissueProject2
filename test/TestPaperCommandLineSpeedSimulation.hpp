@@ -79,6 +79,14 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "VertexModelDataWriter.hpp"
 #include "FarhadifarForceWriter.hpp"
 #include "PolygonNumberCorrelationWriter.hpp"
+#include "CellForcesWriter.hpp"
+#include "VertexModelDataWriter.hpp"
+#include "CellEdgeCountWriter.hpp"
+#include "CellPerimeterWriter.hpp"
+#include "ForwardEulerNumericalMethod.hpp"
+#include "AreaCorrelationWriter.hpp"
+#include "NeighbourNumberCorrelationWriter.hpp"
+#include "VertexEdgeLengthWriter.hpp"
 
 #include "CommandLineArguments.hpp"
 
@@ -113,8 +121,8 @@ public:
         double mT1SwapThreshold = 0.01;   // o 
         double mT2SwapThreshold = 0.001;  // o
         unsigned mInitialSize = 2u; // o 
-        double mLineTensionParameter = 0.12; // o // Lambda -0.85, 0.0 , 0.12
-        double mPerimeterContractilityParameter = 0.04; // o   // Gamma 0.1 , 0.1 , 0.04
+        double mLineTensionParameter = outp1; // o // Lambda -0.85, 0.0 , 0.12
+        double mPerimeterContractilityParameter = outp2; // o   // Gamma 0.1 , 0.1 , 0.04
         double mBoundaryTensionParameter = mLineTensionParameter; // o  
         //bool mUseRungeKuttaMethod = false; //o
         
@@ -242,6 +250,9 @@ public:
     }
 
 };
+
+
+#endif /*TESTPAPERVERTEXSIMULATION_HPP_*/
 
 
 #endif /*TESTPAPERVERTEXSIMULATION_HPP_*/
