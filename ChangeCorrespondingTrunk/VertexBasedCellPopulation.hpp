@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2005-2023, University of Oxford.
+Copyright (c) 2005-2025, University of Oxford.
 All rights reserved.
 
 University of Oxford means the Chancellor, Masters and Scholars of the
@@ -175,7 +175,7 @@ private:
 
 protected:
 
-/**
+    /**
      * A static cast of the AbstractMesh from AbstractCellPopulation
      * for use in this class
      */
@@ -205,16 +205,17 @@ public:
      * Constructor for use by boost serialization ONLY!
      *
      * @param rMesh a vertex mesh.
+     * @param rPopSrn a population SRN remapping helper class
      */
     VertexBasedCellPopulation(MutableVertexMesh<DIM, DIM>& rMesh,
                               VertexBasedPopulationSrn<DIM>& rPopSrn);
 
-    /**
+     /**
      * Constructor for use by boost serialization ONLY!
      *
      * @param rMesh a vertex mesh.
      */
-    VertexBasedCellPopulation(MutableVertexMesh<DIM, DIM>& rMesh);                          
+    VertexBasedCellPopulation(MutableVertexMesh<DIM, DIM>& rMesh);     
 
     /**
      * Destructor, which frees any memory allocated by the constructor.
@@ -284,26 +285,26 @@ public:
 
     /**
      * Overridden GetNeighbouringLocationIndices() method.
-     * Given a cell, returns the set of location indices corresponding to 
+     * Given a cell, returns the set of location indices corresponding to
      * neighbouring cells.
      *
      * @param pCell a cell
-     * 
+     *
      * @return the set of neighbouring location indices.
      */
     std::set<unsigned> GetNeighbouringLocationIndices(CellPtr pCell);
 
     /**
      * Overridden GetNeighbouringEdgeIndices() method.
-     * Gets the local edge index of the neighbouring element and the element 
+     * Gets the local edge index of the neighbouring element and the element
      * index.
-     * 
+     *
      * @param pCell  Cell pointer
-     * @param pEdgeIndex Local edge index
-     * 
+     * @param edgeLocalIndex Local edge index
+     *
      * @return set of pairs consisting of element index neighbouring pCell and local edge index
      */
-    std::set<std::pair<unsigned, unsigned>> GetNeighbouringEdgeIndices(CellPtr pCell, unsigned EdgeLocalIndex);
+    std::set<std::pair<unsigned, unsigned>> GetNeighbouringEdgeIndices(CellPtr pCell, unsigned edgeLocalIndex);
 
     /**
      * Overridden AddNode() method.
@@ -444,14 +445,6 @@ public:
      * @return volume via associated mesh element
      */
     double GetVolumeOfCell(CellPtr pCell);
-
-    /**
-     * Converter which takes in Petscs vectors and converts them to a c_vector
-     *
-     * @param petscVec the PetSc vector to be converted
-     * @return c_vector variation of the PetSc vector
-     */
-    std::vector<double> ConvertPetscVecToVector(Vec petscVec);
 
     /**
      * Return all locations of T2 swaps since the last sampling time step.
