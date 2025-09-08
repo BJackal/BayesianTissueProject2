@@ -41,6 +41,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "NodeBasedCellPopulation.hpp"
 #include "PottsBasedCellPopulation.hpp"
 #include "VertexBasedCellPopulation.hpp"
+#include "ImmersedBoundaryCellPopulation.hpp"
 #include "SimulationTime.hpp"
 #include <boost/accumulators/accumulators.hpp>
 #include <boost/accumulators/statistics.hpp>
@@ -91,6 +92,12 @@ template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
 void AreaCorrelationWriter<ELEMENT_DIM, SPACE_DIM>::Visit(PottsBasedCellPopulation<SPACE_DIM>* pCellPopulation)
 {
     EXCEPTION("This writer is supposed to be used with a VertexBasedCellPopulation only.");
+}
+
+template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
+void AreaCorrelationWriter<ELEMENT_DIM, SPACE_DIM>::Visit(ImmersedBoundaryCellPopulation<SPACE_DIM>* pCellPopulation)
+{
+    EXCEPTION("AreaCorrelationWriter is not yet implemented for ImmersedBoundaryCellPopulation");
 }
 
 template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
