@@ -112,6 +112,13 @@ public:
     virtual void Visit(VertexBasedCellPopulation<SPACE_DIM>* pCellPopulation);
 
     /**
+     * Visit the population and write the data.
+     *
+     * @param pCellPopulation pointer to the ImmersedBoundaryCellPopulation to visit.
+     */
+    virtual void Visit(ImmersedBoundaryCellPopulation<SPACE_DIM>* pCellPopulation);
+
+    /**
      * This method calculates and returns the forces
      *
      * @param pCellPopulation The cell population
