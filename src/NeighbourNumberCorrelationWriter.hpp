@@ -115,6 +115,13 @@ public:
     virtual void Visit(VertexBasedCellPopulation<SPACE_DIM>* pCellPopulation);
 
     /**
+     * Visit the population and write the data.
+     *
+     * @param pCellPopulation pointer to the ImmersedBoundaryCellPopulation to visit.
+     */
+    virtual void Visit(ImmersedBoundaryCellPopulation<SPACE_DIM>* pCellPopulation);
+
+    /**
      * Helper function to calculate the mean and variance of the neighbour number for cells
      * that are not on the tissue boundary.
      *
