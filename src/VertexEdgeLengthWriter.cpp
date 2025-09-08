@@ -40,6 +40,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "NodeBasedCellPopulation.hpp"
 #include "PottsBasedCellPopulation.hpp"
 #include "VertexBasedCellPopulation.hpp"
+#include "ImmersedBoundaryCellPopulation.hpp"
 #include "VertexElement.hpp"
 #include "UblasIncludes.hpp"
 
@@ -52,21 +53,31 @@ VertexEdgeLengthWriter<ELEMENT_DIM, SPACE_DIM>::VertexEdgeLengthWriter()
 template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
 void VertexEdgeLengthWriter<ELEMENT_DIM, SPACE_DIM>::Visit(MeshBasedCellPopulation<ELEMENT_DIM, SPACE_DIM>* pCellPopulation)
 {
+	EXCEPTION("This writer is supposed to be used with a VertexBasedCellPopulation only.");
 }
 
 template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
 void VertexEdgeLengthWriter<ELEMENT_DIM, SPACE_DIM>::Visit(CaBasedCellPopulation<SPACE_DIM>* pCellPopulation)
 {
+	EXCEPTION("This writer is supposed to be used with a VertexBasedCellPopulation only.");
 }
 
 template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
 void VertexEdgeLengthWriter<ELEMENT_DIM, SPACE_DIM>::Visit(NodeBasedCellPopulation<SPACE_DIM>* pCellPopulation)
 {
+	EXCEPTION("This writer is supposed to be used with a VertexBasedCellPopulation only.");
 }
 
 template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
 void VertexEdgeLengthWriter<ELEMENT_DIM, SPACE_DIM>::Visit(PottsBasedCellPopulation<SPACE_DIM>* pCellPopulation)
 {
+	EXCEPTION("This writer is supposed to be used with a VertexBasedCellPopulation only.");
+}
+
+template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
+void VertexEdgeLengthWriter<ELEMENT_DIM, SPACE_DIM>::Visit(ImmersedBoundaryCellPopulation<SPACE_DIM>* pCellPopulation)
+{
+    EXCEPTION("This writer is supposed to be used with a VertexBasedCellPopulation only.");
 }
 
 template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
