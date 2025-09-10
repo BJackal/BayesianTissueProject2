@@ -171,9 +171,9 @@ public:
         cell_population.AddCellWriter<CellEdgeCountWriter>();
         cell_population.AddCellWriter<CellPerimeterWriter>();
         // Cell Population Writers
-        //cell_population.AddCellPopulationCountWriter<FarhadifarForceWriter>(); //TODO
+        cell_population.AddCellPopulationCountWriter<FarhadifarForceWriter>(); //TODO
         cell_population.AddCellPopulationCountWriter<AreaCorrelationWriter>(); 
-        //cell_population.AddCellPopulationCountWriter<PolygonNumberCorrelationWriter>(); //TODO
+        cell_population.AddCellPopulationCountWriter<PolygonNumberCorrelationWriter>(); //TODO
         cell_population.AddCellPopulationCountWriter<NeighbourNumberCorrelationWriter>();
         cell_population.AddPopulationWriter<VertexEdgeLengthWriter>(); 
 
