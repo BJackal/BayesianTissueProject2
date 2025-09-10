@@ -39,56 +39,39 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <cxxtest/TestSuite.h>
 #include "CheckpointArchiveTypes.hpp"
 #include "AbstractCellBasedTestSuite.hpp"
-#include "HoneycombVertexMeshGenerator.hpp"
-#include "VoronoiVertexMeshGenerator.hpp"
-#include "NodeBasedCellPopulation.hpp"
+
 #include "OffLatticeSimulation.hpp"
-#include "VertexBasedCellPopulation.hpp"
 #include "TargetAreaLinearGrowthModifier.hpp"
 #include "FarhadifarForce.hpp"
-#include "SimpleTargetAreaModifier.hpp"
 #include "PetscSetupAndFinalize.hpp"
-#include "NoCellCycleModel.hpp"
-#include "DifferentiatedCellProliferativeType.hpp"
 #include "FixedSequenceCellCycleModel.hpp"
-#include "FixedG1GenerationalCellCycleModel.hpp"
 #include "TransitCellProliferativeType.hpp"
-#include "CellVolumesWriter.hpp"
-#include "CellAgesWriter.hpp"
-#include "CellProliferativePhasesWriter.hpp"
-#include "CellProliferativePhasesCountWriter.hpp"
-#include "CellProliferativeTypesWriter.hpp"
 #include "CellDataItemWriter.hpp"
-#include "CellProliferativeTypesCountWriter.hpp"
-#include "CellMutationStatesCountWriter.hpp"
 #include "CellPropertyRegistry.hpp"
 #include "SmartPointers.hpp"
 #include "WildTypeCellMutationState.hpp"
-#include "StemCellProliferativeType.hpp"
 
-#include "CellForcesWriter.hpp"
-#include "VertexModelDataWriter.hpp"
-#include "CellEdgeCountWriter.hpp"
-#include "CellPerimeterWriter.hpp"
 #include "ForwardEulerNumericalMethod.hpp"
 
+#include "VertexModelDataWriter.hpp"
+#include "CellProliferativePhasesWriter.hpp"
+#include "CellAgesWriter.hpp"
+#include "CellEdgeCountWriter.hpp"
+#include "CellPerimeterWriter.hpp"
+
+//#include "CellForcesWriter.hpp"
+#include "FarhadifarForceWriter.hpp"
+#include "PolygonNumberCorrelationWriter.hpp"
 #include "AreaCorrelationWriter.hpp"
 #include "NeighbourNumberCorrelationWriter.hpp"
 #include "VertexEdgeLengthWriter.hpp"
 
-#include "TargetAreaLinearGrowthModifier.hpp"
-#include "CellForcesWriter.hpp"
-#include "RK4NumericalMethod.hpp"
-#include "TransitCellProliferativeType.hpp"
+//#include "RK4NumericalMethod.hpp"
 #include "ModifiedVertexBasedCellPopulation.hpp"
 #include "CellsGenerator.hpp"
-#include "FixedSequenceCellCycleModel.hpp"
 #include "CellCycleTimesGenerator.hpp"
 #include "ExtendedHoneycombVertexMeshGenerator.hpp"
 #include "FasterMutableVertexMesh.hpp"
-#include "VertexModelDataWriter.hpp"
-#include "FarhadifarForceWriter.hpp"
-#include "PolygonNumberCorrelationWriter.hpp"
 
 #include "CommandLineArguments.hpp"
 
@@ -106,7 +89,7 @@ public:
      */
     void TestRunningBayesianTissueSpeed()
     {
-        int mRandomSeed = 0;
+        int mRandomSeed = 1;
         //double mDt = 0.01;
         unsigned mNumberGenerations = 7u; //o
         double mAverageCellCycleTime = 20.0; // o
@@ -179,7 +162,7 @@ public:
 
         // Cell writers
         cell_population.AddCellWriter<VertexModelDataWriter>();
-        //cell_population.AddCellWriter<CellProliferativePhasesWriter>();
+        cell_population.AddCellWriter<CellProliferativePhasesWriter>();
         cell_population.AddCellWriter<CellAgesWriter>();
         cell_population.AddCellWriter<CellEdgeCountWriter>();
         cell_population.AddCellWriter<CellPerimeterWriter>();
