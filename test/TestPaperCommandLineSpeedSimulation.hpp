@@ -95,7 +95,7 @@ public:
         double outp1 = CommandLineArguments::Instance()->GetDoubleCorrespondingToOption("-opt1"); // Our Lambda value
         double outp2 = CommandLineArguments::Instance()->GetUnsignedCorrespondingToOption("-opt2"); // Our Gamma Value
 
-        int mRandomSeed = 0;
+        int mRandomSeed = 1;
         //double mDt = 0.01; 
         unsigned mNumberGenerations = 7u; //o
         double mAverageCellCycleTime = 20.0; // o
