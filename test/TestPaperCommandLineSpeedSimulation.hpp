@@ -95,7 +95,10 @@ public:
         double outp1 = CommandLineArguments::Instance()->GetDoubleCorrespondingToOption("-opt1"); // Our Lambda value
         double outp2 = CommandLineArguments::Instance()->GetUnsignedCorrespondingToOption("-opt2"); // Our Gamma Value
 
-        int mRandomSeed = 1;
+        double number1 = std::stod(CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt4"));
+        double number2 = std::stod(CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt3")); 
+        int mRandomSeed = (number1 + number2);
+		
         //double mDt = 0.01; 
         unsigned mNumberGenerations = 7u; //o
         double mAverageCellCycleTime = 20.0; // o
