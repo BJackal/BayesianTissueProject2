@@ -72,6 +72,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "CellCycleTimesGenerator.hpp"
 #include "ExtendedHoneycombVertexMeshGenerator.hpp"
 #include "FasterMutableVertexMesh.hpp"
+#include "FarhadifarForceWriter.hpp"
+#include "PolygonNumberCorrelationWriter.hpp"
 
 #include "CommandLineArguments.hpp"
 
@@ -94,11 +96,11 @@ public:
         EXIT_IF_PARALLEL;
         double outp1 = CommandLineArguments::Instance()->GetDoubleCorrespondingToOption("-opt1"); // Our Lambda value
         double outp2 = CommandLineArguments::Instance()->GetUnsignedCorrespondingToOption("-opt2"); // Our Gamma Value
+        
 
         double number1 = std::stod(CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt4"));
         double number2 = std::stod(CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt3")); 
         int mRandomSeed = (number1 + number2);
-		
         //double mDt = 0.01; 
         unsigned mNumberGenerations = 7u; //o
         double mAverageCellCycleTime = 20.0; // o
@@ -107,9 +109,9 @@ public:
         bool mRestrictVertexMovement = true; // o
         bool mRandomiseT1SwapOrder = false;
         //unsigned mSamplingTimestepMultiple = 0u;
-        double mT1SwapThreshold = 0.01;   // o 
+        double mT1SwapThreshold = 0.01;   // o
         double mT2SwapThreshold = 0.001;  // o
-        unsigned mInitialSize = 2u; // o 
+        unsigned mInitialSize = 2u; // o
         double mLineTensionParameter = outp1; // o // Lambda -0.85, 0.0 , 0.12
         double mPerimeterContractilityParameter = outp2; // o   // Gamma 0.1 , 0.1 , 0.04
         double mBoundaryTensionParameter = mLineTensionParameter; // o  
@@ -156,7 +158,8 @@ public:
             p_cell->SetCellProliferativeType(p_diff_type);
 
             
-            double birth_time = -RandomNumberGenerator::Instance()->ranf()*12.0;
+            //double birth_time = -RandomNumberGenerator::Instance()->ranf()*12.0;
+            double birth_time = 0.0;
             p_cell->SetBirthTime(birth_time);
             cells.push_back(p_cell);
         }
@@ -173,9 +176,11 @@ public:
         cell_population.AddCellWriter<CellAgesWriter>();
         cell_population.AddCellWriter<CellEdgeCountWriter>();
         cell_population.AddCellWriter<CellPerimeterWriter>();
+        
         // Cell Population Writers
-        cell_population.AddCellPopulationCountWriter<FarhadifarForceWriter>(); //TODO
-        cell_population.AddCellPopulationCountWriter<AreaCorrelationWriter>(); 
+        cell_population.AddCellPopulationCountWriter<FarhadifarForceWriter>();
+        //cell_population.AddCellPopulationCountWriter<CellForcesWriter>(); //TODO
+        cell_population.AddCellPopulationCountWriter<AreaCorrelationWriter>();
         cell_population.AddCellPopulationCountWriter<PolygonNumberCorrelationWriter>(); //TODO
         cell_population.AddCellPopulationCountWriter<NeighbourNumberCorrelationWriter>();
         cell_population.AddPopulationWriter<VertexEdgeLengthWriter>(); 
@@ -205,8 +210,8 @@ public:
          * and run the simulation. */
         OffLatticeSimulation<2> simulator(cell_population);
 
-        simulator.SetOutputDirectory("TestBayesianCommandLineRun/_Sim_Number_"+CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt4")+"Lambda__"+CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt1")+"_Gamma_"+CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt2")+"_Run_"+CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt3")+"");
-        simulator.SetSamplingTimestepMultiple(10);
+        simulator.SetOutputDirectory("TestBayesianCommandLineRun2/_Sim_Number_"+CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt4")+"Lambda__"+CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt1")+"_Gamma_"+CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt2")+"_Run_"+CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt3")+"");
+        simulator.SetSamplingTimestepMultiple(100);
         simulator.SetDt(0.01);
         simulator.SetEndTime(actual_end_time);
 
@@ -216,13 +221,11 @@ public:
         p_force->SetLineTensionParameter(mLineTensionParameter); // Lambda -0.85, 0.0 , 0.12
         // If our Line tension parameter is negative in the bulk we need to set it to zero at the boundary
         // This is to prevent non-physical behaviour from occuring
-        if( mLineTensionParameter < 0){
-            p_force->SetBoundaryLineTensionParameter(0.0);
+        if(mLineTensionParameter < 0){
+                    p_force->SetBoundaryLineTensionParameter(0.0);
         } else {
             p_force->SetBoundaryLineTensionParameter(mBoundaryTensionParameter);
         }
-        //MAKE_PTR(NagaiHondaForce<2>, p_force);
-        //MAKE_PTR(WelikyOsterForce<2>, p_force);
         simulator.AddForce(p_force);
 
         MAKE_PTR(TargetAreaLinearGrowthModifier<2>, p_growth_modifier);
