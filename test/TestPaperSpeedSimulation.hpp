@@ -60,8 +60,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "CellPerimeterWriter.hpp"
 
 //#include "CellForcesWriter.hpp"
-#include "FarhadifarForceWriter.hpp"
-#include "PolygonNumberCorrelationWriter.hpp"
+//#include "FarhadifarForceWriter.hpp"
+//#include "PolygonNumberCorrelationWriter.hpp"
 #include "AreaCorrelationWriter.hpp"
 #include "NeighbourNumberCorrelationWriter.hpp"
 #include "VertexEdgeLengthWriter.hpp"
@@ -89,7 +89,7 @@ public:
      */
     void TestRunningBayesianTissueSpeed()
     {
-        int mRandomSeed = 1;
+        int mRandomSeed = RandomNumberGenerator::Instance()->ranf();
         //double mDt = 0.01;
         unsigned mNumberGenerations = 7u; //o
         double mAverageCellCycleTime = 20.0; // o
@@ -101,8 +101,8 @@ public:
         double mT1SwapThreshold = 0.01;   // o
         double mT2SwapThreshold = 0.001;  // o
         unsigned mInitialSize = 2u; // o
-        double mLineTensionParameter = 0.12; // o // Lambda -0.85, 0.0 , 0.12
-        double mPerimeterContractilityParameter = 0.04; // o   // Gamma 0.1 , 0.1 , 0.04
+        double mLineTensionParameter = -0.5; // o // Lambda -0.85, 0.0 , 0.12 -0.5259
+        double mPerimeterContractilityParameter = 0.1; // o   // Gamma 0.1 , 0.1 , 0.04
         double mBoundaryTensionParameter = mLineTensionParameter; // o
         //bool mUseRungeKuttaMethod = false; //o
 
@@ -125,7 +125,8 @@ public:
         p_mesh->SetRandomizeT1SwapOrderBoolean( mRandomiseT1SwapOrder );
 
         p_mesh->SetCellRearrangementRatio(mNewEdgeLengthFactor);
-        p_mesh->SetCheckForInternalIntersections(true);
+        p_mesh->SetCheckForInternalIntersections(false);
+        p_mesh->SetCheckForT3Swaps(true);
 
 
         std::vector<CellPtr> cells;
@@ -138,7 +139,7 @@ public:
             FixedSequenceCellCycleModel* p_cc_model = new FixedSequenceCellCycleModel();
             //UniformG1GenerationalCellCycleModel* p_cc_model = new UniformG1GenerationalCellCycleModel();
             p_cc_model->SetDimension(2);
-            p_cc_model->SetG2Duration(1.0/3.0*mAverageCellCycleTime);
+            p_cc_model->SetG2Duration((1.0/3.0)*mAverageCellCycleTime);
             p_cc_model->SetMDuration(1e-12);
             p_cc_model->SetSDuration(1e-12);
             p_cc_model->SetMaxTransitGenerations(mNumberGenerations);
@@ -168,16 +169,17 @@ public:
         cell_population.AddCellWriter<CellPerimeterWriter>();
 
         // Cell Population Writers
-        cell_population.AddCellPopulationCountWriter<FarhadifarForceWriter>(); //TODO
+        //cell_population.AddCellPopulationCountWriter<FarhadifarForceWriter>(); //TODO
+        //cell_population.AddCellPopulationCountWriter<CellForcesWriter>(); //TODO
         cell_population.AddCellPopulationCountWriter<AreaCorrelationWriter>();
-        cell_population.AddCellPopulationCountWriter<PolygonNumberCorrelationWriter>(); //TODO
+        //cell_population.AddCellPopulationCountWriter<PolygonNumberCorrelationWriter>(); //TODO
         cell_population.AddCellPopulationCountWriter<NeighbourNumberCorrelationWriter>();
         cell_population.AddPopulationWriter<VertexEdgeLengthWriter>(); 
 
         //cell_population.rGetMesh().SetCellRearrangementThreshold(0.2);
 
-        cell_population.SetWriteCellVtkResults(false);
-        cell_population.SetWriteEdgeVtkResults(false);
+        cell_population.SetWriteCellVtkResults(true);
+        cell_population.SetWriteEdgeVtkResults(true);
 
         CellPtr p_cell_0b = cell_population.GetCellUsingLocationIndex(3);
 
@@ -209,13 +211,11 @@ public:
         p_force->SetLineTensionParameter(mLineTensionParameter); // Lambda -0.85, 0.0 , 0.12
         // If our Line tension parameter is negative in the bulk we need to set it to zero at the boundary
         // This is to prevent non-physical behaviour from occuring
-        if(p_force->GetLineTensionParameter() < 0){
-                    p_force->SetBoundaryLineTensionParameter(0.0);
+        if( mLineTensionParameter < 0){
+            p_force->SetBoundaryLineTensionParameter(0.0);
         } else {
             p_force->SetBoundaryLineTensionParameter(mBoundaryTensionParameter);
         }
-        //MAKE_PTR(NagaiHondaForce<2>, p_force);
-        //MAKE_PTR(WelikyOsterForce<2>, p_force);
         simulator.AddForce(p_force);
 
         MAKE_PTR(TargetAreaLinearGrowthModifier<2>, p_growth_modifier);
@@ -237,6 +237,9 @@ public:
     }
 
 };
+
+
+#endif /*TESTPAPERSPEEDSIMULATION_HPP_*/
 
 
 #endif /*TESTPAPERSPEEDSIMULATION_HPP_*/
