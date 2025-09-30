@@ -134,7 +134,7 @@ public:
         p_mesh->SetRandomizeT1SwapOrderBoolean( mRandomiseT1SwapOrder );
 
         p_mesh->SetCellRearrangementRatio(mNewEdgeLengthFactor);
-        p_mesh->SetCheckForInternalIntersections(true);
+        p_mesh->SetCheckForInternalIntersections(false);
 
 
         std::vector<CellPtr> cells;
@@ -216,11 +216,11 @@ public:
         p_force->SetLineTensionParameter(mLineTensionParameter); // Lambda -0.85, 0.0 , 0.12
         // If our Line tension parameter is negative in the bulk we need to set it to zero at the boundary
         // This is to prevent non-physical behaviour from occuring
-        if(p_force->GetLineTensionParameter() < 0){
-                    p_force->SetBoundaryLineTensionParameter(0.0);
+        if( mLineTensionParameter < 0){
+            p_force->SetBoundaryLineTensionParameter(0.0);
         } else {
             p_force->SetBoundaryLineTensionParameter(mBoundaryTensionParameter);
-        }  
+        }
         //MAKE_PTR(NagaiHondaForce<2>, p_force);
         //MAKE_PTR(WelikyOsterForce<2>, p_force);
         simulator.AddForce(p_force);
