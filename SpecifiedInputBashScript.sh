@@ -23,7 +23,6 @@
 
 # Here we will create a loop that goes through each row and takes the given values for Lambda and Gamma
 
-
 while IFS="," read -r rec_column1 rec_column2 rec_column3 rec_column4
 do
 ## This for loop re-runs each parameter pair based on the Run number in the CSV
@@ -32,10 +31,10 @@ for ((i = 1; i <= $rec_column3; i += 1)); do
      echo "Gamma: $rec_column2"
      echo "Simulation: $rec_column4"
      echo "Run: $i"
-     ## Running simulation with read in parameters
-     ~/build/projects/BayesianTissueProject2/test/TestPaperCommandLineSpeedSimulation -opt1 $rec_column1 -opt2 $rec_column2 -opt3 $i -opt4 $rec_column4 &
+     ## Running simulation with read in parameters and taking a random interger number between 1 - 1000 as the 5th command line option
+     ~/build/projects/BayesianTissueProject2/test/TestPaperCommandLineSpeedSimulation -opt1 $rec_column1 -opt2 $rec_column2 -opt3 $i -opt4 $rec_column4 -opt5 $((1+ $RANDOM % 1000)) &
      echo ""
 done
-done < <(tail -n +1 ~/Chaste/projects/BayesianTissueProject2/ExampleCommandLineCSV.csv)
+done < <(tail -n  +1 ~/Chaste/projects/BayesianTissueProject2/ExampleCommandLineCSV.csv)
 # Echos that the simulations have all been ran, this does not mean they did not error.
 echo All done
