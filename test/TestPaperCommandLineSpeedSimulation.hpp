@@ -97,8 +97,11 @@ public:
 
         double number1 = std::stod(CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt4"));
         double number2 = std::stod(CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt3"));  
+        double number3 = std::stod(CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt5"));
+        
+        //std::cout << "Random number" << number3 << "\n";
 
-        int mRandomSeed = (number1 + number2);
+        int mRandomSeed = (number1 + number2)*number3;
         //double mDt = 0.01; 
         unsigned mNumberGenerations = 7u; //o
         double mAverageCellCycleTime = 20.0; // o
