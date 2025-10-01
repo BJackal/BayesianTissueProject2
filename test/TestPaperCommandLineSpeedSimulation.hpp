@@ -72,8 +72,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "CellCycleTimesGenerator.hpp"
 #include "ExtendedHoneycombVertexMeshGenerator.hpp"
 #include "FasterMutableVertexMesh.hpp"
-#include "FarhadifarForceWriter.hpp"
-#include "PolygonNumberCorrelationWriter.hpp"
 
 #include "CommandLineArguments.hpp"
 
@@ -95,11 +93,11 @@ public:
         /* We include the next line because Vertex simulations cannot be run in parallel */
         EXIT_IF_PARALLEL;
         double outp1 = CommandLineArguments::Instance()->GetDoubleCorrespondingToOption("-opt1"); // Our Lambda value
-        double outp2 = CommandLineArguments::Instance()->GetUnsignedCorrespondingToOption("-opt2"); // Our Gamma Value
-        
+        double outp2 = CommandLineArguments::Instance()->GetDoubleCorrespondingToOption("-opt2"); // Our Gamma Value  
 
         double number1 = std::stod(CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt4"));
-        double number2 = std::stod(CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt3")); 
+        double number2 = std::stod(CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt3"));  
+
         int mRandomSeed = (number1 + number2);
         //double mDt = 0.01; 
         unsigned mNumberGenerations = 7u; //o
@@ -137,6 +135,7 @@ public:
 
         p_mesh->SetCellRearrangementRatio(mNewEdgeLengthFactor);
         p_mesh->SetCheckForInternalIntersections(false);
+        p_mesh->SetCheckForT3Swaps(true);
 
 
         std::vector<CellPtr> cells;
@@ -149,7 +148,7 @@ public:
             FixedSequenceCellCycleModel* p_cc_model = new FixedSequenceCellCycleModel();
             //UniformG1GenerationalCellCycleModel* p_cc_model = new UniformG1GenerationalCellCycleModel();
             p_cc_model->SetDimension(2);
-            p_cc_model->SetG2Duration(1.0/3.0*mAverageCellCycleTime);
+            p_cc_model->SetG2Duration((1.0/3.0)*mAverageCellCycleTime);
             p_cc_model->SetMDuration(1e-12);
             p_cc_model->SetSDuration(1e-12);
             p_cc_model->SetMaxTransitGenerations(mNumberGenerations);
@@ -211,8 +210,8 @@ public:
         OffLatticeSimulation<2> simulator(cell_population);
 
         simulator.SetOutputDirectory("TestBayesianCommandLineRun2/_Sim_Number_"+CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt4")+"Lambda__"+CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt1")+"_Gamma_"+CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt2")+"_Run_"+CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt3")+"");
-        simulator.SetSamplingTimestepMultiple(100);
-        simulator.SetDt(0.01);
+        simulator.SetSamplingTimestepMultiple(200);
+        simulator.SetDt(0.005);
         simulator.SetEndTime(actual_end_time);
 
         MAKE_PTR(FarhadifarForce<2>, p_force);
@@ -230,6 +229,11 @@ public:
 
         MAKE_PTR(TargetAreaLinearGrowthModifier<2>, p_growth_modifier);
         simulator.AddSimulationModifier(p_growth_modifier);
+
+        // Pass an adaptive numerical method to the simulation
+        boost::shared_ptr<AbstractNumericalMethod<2,2> > p_method(new ForwardEulerNumericalMethod<2,2>());
+        p_method->SetUseAdaptiveTimestep(true);
+        simulator.SetNumericalMethod(p_method);
 
         //MAKE_PTR(VertexBoundaryRefinementModifier<2>, refinement_modifier);
         //refinement_modifier->SetMaxEdgeLength(2.0);
