@@ -7,26 +7,27 @@
 # Note this bash script should read all numbers in the bash script regardless of length
 # So one could begin with a single set of parameters (low fidelity) then supply 10 in the following runs (high fidelity)
 
-# ------------   Begining of CSV -------------
-#       Lambda     Gamma      Runs
-#          1         10        3
-#          2         9         2
-#          3         8         2
-#          4         7         1
-#          5         6         1
-#          6         5         3
-#          7         4         2
-#          8         3         1
-#          9         2         1
-#          10        1         3
-# --------------   End of CSV  ----------------
+# ----------------   Begining of CSV -----------------
+#       Lambda     Gamma      Runs    Simulation
+#          1         10        3           1
+#          2         9         2           2
+#          3         8         2           3
+#          4         7         1           4
+#          5         6         1           5
+#          6         5         3           6
+#          7         4         2           7
+#          8         3         1           8
+#          9         2         1           9
+#          10        1         3           10
+# ------------------   End of CSV  --------------------
 
 # Here we will create a loop that goes through each row and takes the given values for Lambda and Gamma
 
 while IFS="," read -r rec_column1 rec_column2 rec_column3 rec_column4
 do
+i=1
 ## This for loop re-runs each parameter pair based on the Run number in the CSV
-for ((i = 1; i <= $rec_column3; i += 1)); do
+for ((i; i <= $rec_column3; i += 1)); do
      echo "Lambda: $rec_column1"
      echo "Gamma: $rec_column2"
      echo "Simulation: $rec_column4"
@@ -38,11 +39,13 @@ for ((i = 1; i <= $rec_column3; i += 1)); do
      (~/build/projects/BayesianTissueProject2/test/TestPaperCommandLineSpeedSimulation --timeout 1 -opt1 $rec_column1 -opt2 $rec_column2 -opt3 $i -opt4 $rec_column4 -opt5 $((1+ $RANDOM % 1000))) & pid=$!
      (sleep 1800 && kill -HUP $pid) 2>/dev/null & watcher=$!
      if wait $pid 2>/dev/null; then
-        echo "The simulation ran correctly"
+        ##echo "The simulation ran correctly"
         pkill -HUP -P $watcher
         wait $watcher
      else 
         echo "The simulation was killed due to exceeding the timout limit"
+        i=`expr $rec_column3`
+        echo "The Parameter pair of Lambda = $rec_column1 and Gamma = $rec_column2 will be skipped"
      fi      
      echo ""
 done
