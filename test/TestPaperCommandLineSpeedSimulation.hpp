@@ -98,8 +98,13 @@ public:
         double number1 = std::stod(CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt4"));
         double number2 = std::stod(CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt3"));  
         double number3 = std::stod(CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt5"));
+
+        double timestep = CommandLineArguments::Instance()->GetDoubleCorrespondingToOption("-opt6");
         
-        //std::cout << "Random number" << number3 << "\n";
+        std::cout << "Random number " << number3 << "\n";
+        std::cout << "Lambda " << outp1 << "\n";
+        std::cout << "Gamma " << outp2 << "\n";
+
 
         int mRandomSeed = (number1 + number2)*number3;
         //double mDt = 0.01; 
@@ -137,6 +142,7 @@ public:
         p_mesh->SetRandomizeT1SwapOrderBoolean( mRandomiseT1SwapOrder );
 
         p_mesh->SetCellRearrangementRatio(mNewEdgeLengthFactor);
+        //p_mesh->SetCellRearrangementThreshold(0.01);
         p_mesh->SetCheckForInternalIntersections(false);
         p_mesh->SetCheckForT3Swaps(true);
 
@@ -183,14 +189,14 @@ public:
         cell_population.AddCellPopulationCountWriter<FarhadifarForceWriter>();
         //cell_population.AddCellPopulationCountWriter<CellForcesWriter>(); //TODO
         cell_population.AddCellPopulationCountWriter<AreaCorrelationWriter>();
-        cell_population.AddCellPopulationCountWriter<PolygonNumberCorrelationWriter>(); //TODO
+        cell_population.AddCellPopulationCountWriter<PolygonNumberCorrelationWriter>(); 
         cell_population.AddCellPopulationCountWriter<NeighbourNumberCorrelationWriter>();
         cell_population.AddPopulationWriter<VertexEdgeLengthWriter>(); 
 
         //cell_population.rGetMesh().SetCellRearrangementThreshold(0.2);
 
-        cell_population.SetWriteCellVtkResults(false);
-        cell_population.SetWriteEdgeVtkResults(false);
+        cell_population.SetWriteCellVtkResults(true);
+        cell_population.SetWriteEdgeVtkResults(true);
 
         CellPtr p_cell_0b = cell_population.GetCellUsingLocationIndex(3);
         
@@ -213,8 +219,8 @@ public:
         OffLatticeSimulation<2> simulator(cell_population);
 
         simulator.SetOutputDirectory("TestBayesianCommandLineRun2/_Sim_Number_"+CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt4")+"Lambda__"+CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt1")+"_Gamma_"+CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt2")+"_Run_"+CommandLineArguments::Instance()->GetStringCorrespondingToOption("-opt3")+"");
-        simulator.SetSamplingTimestepMultiple(200);
-        simulator.SetDt(0.005);
+        simulator.SetSamplingTimestepMultiple(100);
+        simulator.SetDt(timestep);
         simulator.SetEndTime(actual_end_time);
 
         MAKE_PTR(FarhadifarForce<2>, p_force);
