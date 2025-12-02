@@ -42,8 +42,9 @@ for ((i; i <= $rec_column3; i += 1)); do
 
      ## If your test files are output somewhere other than /tmp/$USER/testoutput then you will need to change everything before /TestBayesianCommandLineRun2 to account for this
      
-     (~/build/projects/BayesianTissueProject2/test/TestPaperCommandLineSpeedSimulation --timeout 1 -opt1 $rec_column1 -opt2 $rec_column2 -opt3 $i -opt4 $rec_column4 -opt5 $((1+ $RANDOM % 1000)) -opt6 $rec_column5) & pid=$!
+     ((~/build/projects/BayesianTissueProject2/test/TestPaperCommandLineSpeedSimulation --timeout 1 -opt1 $rec_column1 -opt2 $rec_column2 -opt3 $i -opt4 $rec_column4 -opt5 $((1+ $RANDOM % 1000)) -opt6 $rec_column5) & pid=$!
       ./checkusage.sh "/tmp/"$USER"/testoutput/TestBayesianCommandLineRun2/_Sim_Number_"$rec_column4"_Lambda__"$rec_column1"_Gamma_"$rec_column2"_Run_"$i"" $pid
+     )&
 
      echo ""
 done
